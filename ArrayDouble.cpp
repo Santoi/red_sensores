@@ -32,11 +32,11 @@ ArrayDouble::ArrayDouble(int N){
 	_Array = new double[_Leng];
 	for (int i = 0; i < _Leng; ++i){
 		_Array[i] = 0;
-	}	
+	}
 }
 
 ArrayDouble::ArrayDouble(const ArrayDouble & Original){
-	
+
 	_Leng = Original._Leng;
 	_Used = Original._Used;
 	_Array = new double[_Leng];
@@ -62,7 +62,7 @@ double& ArrayDouble::operator[](int pos){
 
 double& ArrayDouble::operator[](int pos) const{
 	//Si la posicion ingresada es invalida, sale del programa
-	if(pos < 0 && pos >= _Used){
+	if(pos < 0 || pos >= _Used){
 		std::cerr << ERROR_ARRAY_INDEX << std::endl;
 		exit(EXIT_FAILURE);
 	}
@@ -74,7 +74,7 @@ void ArrayDouble::Append(const double d){
 	int NewSize = _Leng * 2;
 	double * aux;
 
-	//Si el Array no esta lleno, hagrego el nuevo numero 
+	//Si el Array no esta lleno, agrego el nuevo numero
 	if(_Used < _Leng){
 		Array[_Used] = d;
 		_Used ++;
@@ -84,10 +84,10 @@ void ArrayDouble::Append(const double d){
 		//Primero se copia todo a un Array auxiliar
 		aux = new double[_Leng];
 		for(int i = 0; i < _Used; i++){
-			aux[i] = _Array[i]; 
+			aux[i] = _Array[i];
 		}
 
-		//Destrulle y crea un nuevo Array con el doble de largo
+		//Destruye y crea un nuevo Array con el doble de largo
 		delete [] _Array;
 		_Array = new double[NewSize];
 		_Leng = NewSize;
@@ -98,7 +98,7 @@ void ArrayDouble::Append(const double d){
 			_Array[i] = aux[i];
 		}
 
-		//Se destruye el arreglo auxiliar 
+		//Se destruye el arreglo auxiliar
 		delete [] aux;
 
 		// Se agrega el nuevo numero
