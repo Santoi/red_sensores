@@ -12,7 +12,7 @@ Package::Package(){
 	_Min = 0;
 	_Max = 0;
 	_Quantity = 0;
-	_BadRange = FALSE;
+	_BadRange = false;
 }
 
 Package::Package(const Package & p){

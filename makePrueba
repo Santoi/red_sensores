@@ -1,4 +1,18 @@
 # Archivo: makePrueba
 
 CC = g++
-FLAGS =
+FLAGS = -W -Wall -g -pedantic
+
+all: ejecprueba clear
+
+ejecprueba: Prueba.o Package.o
+	$(CC) $(FLAGS) -o ejecprueba Prueba.o Package.o
+
+Prueba.o: Prueba.cpp Package.hpp
+	$(CC) $(FLAGS) -o Prueba.o -c Prueba.cpp
+
+Package.o: Package.cpp Package.hpp
+	$(CC) $(FLAGS) -o Package.o -c Package.cpp
+
+clear:
+	rm *.o
