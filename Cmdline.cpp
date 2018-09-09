@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "cmdline.hpp"
+#include "Cmdline.hpp"
 
 using namespace std;
 

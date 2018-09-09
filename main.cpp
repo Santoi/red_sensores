@@ -36,10 +36,10 @@ static fstream ofs;
 
 /********************* Cuerpo principal *********************/
 
-int main(int argc, char const *argv[]){
+int main(int argc, char * const argv[]){
 	
 	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente.
-	cmdl.parse(argv, argv);	// Metodo de parseo de la clase cmdline. Settea las variables globales
+	cmdl.parse(argc, argv);	// Metodo de parseo de la clase cmdline. Settea las variables globales
 
 	return 0;
 }

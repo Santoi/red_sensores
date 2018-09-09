@@ -5,14 +5,14 @@ FLAGS = -W -Wall -g -pedantic
 
 all: ejecprueba clear
 
-ejecprueba: Prueba.o Package.o
-	$(CC) $(FLAGS) -o ejecprueba Prueba.o Package.o
+ejecprueba: Prueba.o Cmdline.o
+	$(CC) $(FLAGS) -o ejecprueba Prueba.o Cmdline.o
 
-Prueba.o: Prueba.cpp Package.hpp
+Prueba.o: Prueba.cpp Cmdline.hpp
 	$(CC) $(FLAGS) -o Prueba.o -c Prueba.cpp
 
-Package.o: Package.cpp Package.hpp
-	$(CC) $(FLAGS) -o Package.o -c Package.cpp
+Cmdline.o: Cmdline.cpp Cmdline.hpp
+	$(CC) $(FLAGS) -o Cmdline.o -c Cmdline.cpp
 
 clear:
 	rm *.o
