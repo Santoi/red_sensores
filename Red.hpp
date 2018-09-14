@@ -11,15 +11,19 @@
 
 #include "ArrayDouble.hpp"
 #include "Package.hpp"
+#include "Utils.hpp"
+
+#define INITIAL_LENGTH_VECTOR 25
 
 class Red {
 
 private:
 
 	string * _Ids;
-	ArrayDouble * _Sensores;
+	ArrayDouble ** _Sensores;
 	Package  * _Pack;
-	int _Amaunte;
+
+	int _Amaunt;    // Cantidad de sensores almacenados
 
 	void CreateVectors(int);
 

@@ -8,7 +8,10 @@
 
 #include "ArrayDouble.hpp"
 #include "Package.hpp"
+#include "Utils.hpp"
 #include "Red.hpp"
+
+
 
 Red::Red(){
 	_Ids = NULL;
@@ -19,26 +22,34 @@ Red::Red(){
 
 Red::Red(int Num){
 	_Ids = new string[Num];
-	_Sensors = new ArrayDouble[Num];
+	_Sensors = new (ArrayDouble*)[Num];
+	for (int i = 0; i < Num; ++i){
+		_Sensors[i] = new ArrayDouble(INITIAL_LENGTH_VECTOR);
+	}
 	_Pack = new Package;
-	_Amaunte = 0;
+	_Amaunt = Num;
 }
 
 Red::Red(const Red & r){
-	string * saux;
-	ArrayDouble * aux;
-	int SenSize;
+	int SensorSize;
 
-	SenSize = r.GetLeng();
+	SensorSize = r.GetLeng();
 
-	saux = new string[SenSize];
-	aux = new ArrayDouble[GetLeng];
+	_Ids = new string[SensorSize];
+	for (int i = 0; i < SensorSize; ++i){
+		_Ids[i] = r._Ids[i];
+	}
 
+	_Sensors = new (ArrayDouble*)[SensorSize];
+	for (int i = 0; i < SensorSize; ++i){
+		_Sensors[i] = new ArrayDouble(*(r._Sensors[i]));
+	}
 
+	_Pack = new Package(*(r._Pack));
 }
 
 int GetLeng(void){
-	return _Amaunte;
+	return _Amaunt;
 }
 
 void Red::PrintPackage(std::ostream & os){
@@ -73,6 +84,9 @@ std::istream& Red::operator>>(std::istream& is, Red & r){
 
 Red::~Red(){
 	delete[] _Ids;
+	for (int i = 0; i < _Amaunt; ++i){
+		delete[] _Sensors[i];
+	}
 	delete[] _Sensors;
 	delete _Pack;
 }
