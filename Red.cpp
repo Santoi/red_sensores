@@ -45,7 +45,7 @@ Red::Red(const Red & r){
 		_Sensors[i] = new ArrayDouble(*(r._Sensors[i]));
 	}
 
-	_Pack = new Package(*(r._Pack));
+	_Pack = new Package(*(r._Pack))	;
 }
 
 int GetLeng(void){
@@ -57,29 +57,48 @@ void Red::PrintPackage(std::ostream & os){
 
 }
 
-void Red::MakeQuery(string ID, int Start, int End){
+void Red::MakeSmallQuery(string ID, int Start, int End){
 
 
 }
 
 void Red::MakeBigQuery(int Start, int End){
+	int FinalMark;	// Indica donde termina la iteracion 
+	Package aux;
 
+	aux.clear();
 
+	if(Start > _Sensors[0].UsedSize()){
+		_Pack.SetRangeStatus(true);		
+	}
+
+	if(End > _Sensors[0].UsedSize()){
+		FinalMark = _Sensors[0].UsedSize();
+	}else{
+		FinalMark = End;
+	}
+
+	aux.SetQuantity(_Amaunt * (FinalMark - Start)); 
+
+	for (int i = 0; i < _Amaunt; ++i){
+		for (int j = Start; j < FinalMark; ++j){
+			aux.SetAverage(aux.GetAverage() + _Sensors[i][j] / aux.GetQuantity());
+			if(_Sensors[i][j] < aux.GetMin()){
+				aux.SetMin(_Sensors[i][j]);
+			}
+			if(_Sensors[i][j] > aux.GetMax()){
+				aux.SetMax(_Sensors[i][j]);
+			}
+		}
+	}
+
+	_Pack = aux;
 }
 
-ArrayDouble& Red::operator[](int Pos){
-
-
-}
-
-ArrayDouble& Red::operator[](int Pos) const{
-
-
-}
-
-std::istream& Red::operator>>(std::istream& is, Red & r){
-
-
+void Red::AppendFile(double * Data){
+	for (int i = 0; i < _Amaunt; ++i){
+		_Sensors[i].Append(Data[i]);
+	}
 }
 
 Red::~Red(){

@@ -30,6 +30,7 @@ public:
 	void SetMax(double);
 	void SetQuantity(int);
 	void SetRangeStatus(bool);
+	void Clear();
 	Package& operator=(const Package &);
 	~Package();
 };

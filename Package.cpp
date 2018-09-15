@@ -63,6 +63,14 @@ void Package::SetRangeStatus(bool b){
 	_BadRange = b;
 }
 
+void Package::Clear(void){
+	_Average = 0;
+	_Min = 0;
+	_Max = 0;
+	_Quantity = 0
+	_BadRange = false;
+}
+
 Package & Package::operator=(const Package & p){
 
 	_Average = p._Average;
