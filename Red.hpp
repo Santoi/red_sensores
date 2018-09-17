@@ -13,6 +13,9 @@
 #include "Package.hpp"
 #include "Utils.hpp"
 
+#define MSG_BAD_RANGE "NO DATA"
+#define MSG_BAD_QUERY "BAD QUERY"
+
 #define INITIAL_LENGTH_VECTOR 25
 
 class Red {
@@ -33,10 +36,11 @@ public:
 	Red(int);
 	Red(cons Red &);
 	int GetLeng(void);
+	void SetSensors(string * &, int);
 	void PrintPackage(std::ostream &);	//Impresion de los datos acumulados en el paquetem se imprime en el stream que se le pasa y lo hace con formato
 	void MakeSmallQuery(string, int, int);	//Le paso un string con la ID del sensor y los rangos para hacer el query
 	void MakeBigQuery(int, int);			//Le paso los rangos para hacer la query ya que lo hace sobre todos los sensores
-	void AppendFile(double *);
+	void AppendRow(double *);
 	~Red();
 };
 

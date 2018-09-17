@@ -43,7 +43,39 @@ void ParseLine(string * & Destino, istream & is, int & ContadorComas = 0){
 
 }
 
+void ParseFirstLine(istream & is, Red & Object){
+	string * Parsed;
+	string Read, aux;
+	stringstream StringRead;
+	int Comas, i = 0;
+	char c;
 
+	if(!(getline(is, Read))){
+		//return Error de archivo corrupto cuando este los errores
+	}
+	for ( i = 0; i < (Read.length() - 1); ++i){
+		if(Read[i] == ','){
+			Comas++;
+		}	
+	}
+	Comas++;
+	Parsed = new string[Comas];
+
+	i = 0;
+	stringstream StringRead(Read);
+	while((StringRead >> aux) && (!StringRead.eof())){
+		if(aux[aux.length() - 1] == ',')
+			StringRead.putback(',');
+		Parsed[i] = aux;
+		i++;
+		if(!((StringRead >> c) && (c == ',')) || i == Comas){
+			break;
+		}
+	}
+
+	Object.SetSensors(Parsed, Comas);
+	delete [] Parsed;
+}
 
 
 
