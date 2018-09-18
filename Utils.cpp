@@ -49,17 +49,20 @@ void ParseFirstLine(istream & is, Red & Object){
 	stringstream StringRead;
 	int Comas, i = 0;
 	char c;
+	bool eol;
 
 	if(!(getline(is, Read))){
 		//return Error de archivo corrupto cuando este los errores
 	}
+
 	for ( i = 0; i < (Read.length() - 1); ++i){
 		if(Read[i] == ','){
 			Comas++;
 		}	
 	}
 	Comas++;
-	Parsed = new string[Comas];
+	Parsed = new str
+	ing[Comas];
 
 	i = 0;
 	stringstream StringRead(Read);
@@ -77,9 +80,70 @@ void ParseFirstLine(istream & is, Red & Object){
 	delete [] Parsed;
 }
 
+void ParsedData(istream & is, Red & Object){
+	string Read;
+	stringstream StringRead;
+	int i;
+	char c;
+	double Number;
+	double * Data;
+	bool eol;
+
+	Data = new double[Object.GetLeng()];
+
+	while(getline(is, Read)){
+		stringstream StringRead(Read);
+		i = 0;
+		while((Read >> Number) && (!Read.eof())){
+			Data[i] = Number;
+			if((i == Object.GetLeng()) || ((is >> c) && (c != ','))){
+				// sale con un error de archivo corrupto
+			} 
+			i++;
+		}
+		Object.Append(Data);
+	}	
+
+	delete [] Data;
+}
+
+void ManageQuerys(istream & is, ostream & os, Red & Object){
+	string Read, Sensor;
+	stringstream StringRead;
+	int i, Start, End;
+	char c;
+	double Number;
 
 
+	while(getline(is, Read)){
+		stringstream StringRead(Read);
+		if(!(StringRead >> Sensor)){
+			// Sale del programa
+		}
+		if(aux[aux.length() - 1] == ',')
+			StringRead.putback(',');
+/*		Hay qu eponer un codigo que se desaga de la coma del string	
+*/
 
+		if(!(StringRead >> c) || (c == ',')){
+			// mala linea
+		}
+
+		if(!(StringRead >> Start) ||
+				!(StringRead >> c) || 
+				!(c == ',') || 
+				!(StringRead >> End)){
+			//mala linea
+		}
+		if(){ // si esta vacia el string llama a big query
+		}else{
+			Object.MakeSmallQuery(Sensor, Start, End);
+		}
+
+		Object.PrintPackage(os);
+	}
+
+}
 
 
 
