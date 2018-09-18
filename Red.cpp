@@ -87,6 +87,7 @@ void Red::PrintPackage(std::ostream & os){
 		os << _Pack.GetAverage() << ',' << _Pack.GetMin() << ',' 	\\
 			<< _Pack.GetMax() << ',' << _Pack.GetQuantity() << std::endl;
 	}
+	(*_Pack).Clear();
 }
 
 void Red::MakeSmallQuery(string ID, int Start, int End){

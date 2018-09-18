@@ -17,7 +17,7 @@ private:
 	int _Quantity;
 	bool _BadRange; // Si esta en TRUE significa que hay un problema con el rango de la consulta
 	bool _BadQuery; // Si esta en TRUE significa que hay un problema con la escritura de la query
-
+	bool _BadId; 	// Se esta en TRUE significa que hay un problema con el Id ingersado, no se coresponde con ninguno de los existentes
 public:
 	Package();
 	Package(const Package &);
@@ -27,12 +27,14 @@ public:
 	int GetQuantity(void);
 	bool GetRangeStatus(void);
 	bool GetQueryStatus(void);
+	bool GetIdStatus(void);
 	void SetAverage(const double);
 	void SetMin(double);
 	void SetMax(double);
 	void SetQuantity(int);
 	void SetRangeStatus(bool);
 	void SetQueryStatus(bool);
+	void SetIdStatus(bool);
 	void Clear();
 	Package& operator=(const Package &);
 	~Package();

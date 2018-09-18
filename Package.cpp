@@ -49,6 +49,10 @@ bool Package::GetQueryStatus(void){
 	return _BadQuery;
 }
 
+bool Package::GetIdStatus(void){
+	return _BadId;
+}
+
 void Package::SetAverage(double d){
 	_Average = d;
 }
@@ -71,6 +75,10 @@ void Package::SetRangeStatus(bool b){
 
 void Package::SetQueryStatus(bool b){
 	_BadQuery = b;
+}
+
+void Package::SetIdStatus(bool b){
+	_BadId = b;
 }
 
 void Package::Clear(void){

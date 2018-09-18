@@ -14,7 +14,7 @@ typedef enum {
 	ST_ERROR_NULL_PTR,
 	ST_ERROR_FILE_CORRUPTED,
 	ST_ERROR_NO_MEMORY,
-	ST_NO_DATA_FILE
+	ST_NO_DATA_FILE,
 } status_t;
 
 void PrintError (status_t &st);
