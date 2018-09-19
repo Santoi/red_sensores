@@ -15,7 +15,7 @@ Red::Red(){
 	_Ids = NULL;
 	_Sensors = NULL;
 	_Pack = new Package;
-	_Amaunt = 0;
+	_Amount = 0;
 }
 
 Red::Red(int Number){
@@ -25,7 +25,7 @@ Red::Red(int Number){
 		_Sensors[i] = new ArrayDouble(INITIAL_LENGTH_VECTOR);
 	}
 	_Pack = new Package;
-	_Amaunt = Number;
+	_Amount = Number;
 }
 
 Red::Red(const Red & r){
@@ -47,7 +47,7 @@ Red::Red(const Red & r){
 }
 
 int GetLeng(void){
-	return _Amaunt;
+	return _Amount;
 }
 
 void SetSensors(string * Names, int Number){	// Number indica la cantidad de strings que tiene el puntero Names
@@ -58,13 +58,13 @@ void SetSensors(string * Names, int Number){	// Number indica la cantidad de str
 		aux[i] = Names[i];
 	}
 
-	if(_Ids != NULL){			// Si el objeto ya tenia Ids asignados se los borra 	
+	if(_Ids != NULL){			// Si el objeto ya tenia Ids asignados se los borra
 		delete [] _Ids;
 	}
 	_Ids = aux;
 
 	if(_Sensors != NULL){		// Si ya se tenia una tabla de valores se la borra
-		for (int i = 0; i < _Amaunt; ++i){
+		for (int i = 0; i < _Amount; ++i){
 			delete[] _Sensors[i];
 		}
 		delete[] _Sensors;
@@ -75,7 +75,7 @@ void SetSensors(string * Names, int Number){	// Number indica la cantidad de str
 		_Sensors[i] = new ArrayDouble(INITIAL_LENGTH_VECTOR);
 	}
 
-	_Amaunt = Number; // Se le asigna la nueva cantidad de sesores
+	_Amount = Number; // Se le asigna la nueva cantidad de sesores
 }
 
 void Red::PrintPackage(std::ostream & os){
@@ -91,18 +91,27 @@ void Red::PrintPackage(std::ostream & os){
 }
 
 void Red::MakeSmallQuery(string ID, int Start, int End){
+	int FinalMark;
 
+	if(Start > _Sensors[].UsedSize()){
+		_Pack.SetRangeStatus(true);
+	}
 
+	if(End > _Sensors[].UsedSize()){
+		FinalMark = _Sensors[].UsedSize();
+	}else{
+		FinalMark = End;
+	}
 }
 
 void Red::MakeBigQuery(int Start, int End){
-	int FinalMark;	// Indica donde termina la iteracion 
+	int FinalMark;	// Indica donde termina la iteracion
 	Package aux;
 
 	aux.clear();
 
 	if(Start > _Sensors[0].UsedSize()){
-		_Pack.SetRangeStatus(true);		
+		_Pack.SetRangeStatus(true);
 	}
 
 	if(End > _Sensors[0].UsedSize()){
@@ -111,9 +120,9 @@ void Red::MakeBigQuery(int Start, int End){
 		FinalMark = End;
 	}
 
-	aux.SetQuantity(_Amaunt * (FinalMark - Start)); 
+	aux.SetQuantity(_Amount * (FinalMark - Start));
 
-	for (int i = 0; i < _Amaunt; ++i){
+	for (int i = 0; i < _Amount; ++i){
 		for (int j = Start; j < FinalMark; ++j){
 			aux.SetAverage(aux.GetAverage() + _Sensors[i][j] / aux.GetQuantity());
 			if(_Sensors[i][j] < aux.GetMin()){
@@ -129,14 +138,14 @@ void Red::MakeBigQuery(int Start, int End){
 }
 
 void Red::AppendRow(double * Data){
-	for (int i = 0; i < _Amaunt; ++i){
+	for (int i = 0; i < _Amount; ++i){
 		_Sensors[i].Append(Data[i]);
 	}
 }
 
 Red::~Red(){
 	delete[] _Ids;
-	for (int i = 0; i < _Amaunt; ++i){
+	for (int i = 0; i < _Amount; ++i){
 		delete[] _Sensors[i];
 	}
 	delete[] _Sensors;

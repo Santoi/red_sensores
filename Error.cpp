@@ -8,7 +8,8 @@ void PrintError (status_t &st) {
 		MSG_NO_ERROR,
 		MSG_ERROR_NULL_PTR,
 		MSG_ERROR_FILE_CORRUPTED,
-		MSG_ERROR_NO_MEMORY
+		MSG_ERROR_NO_MEMORY,
+		MSG_BAD_QUERY
 	};
 
 	if (st != ST_OK)

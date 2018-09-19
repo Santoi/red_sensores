@@ -7,13 +7,13 @@
 #include <string>
 
 #include "Utils.hpp"
-
+/*
 void ParseLine(string * & Destino, istream & is, int & ContadorComas = 0){
 
 	string Entrada;		// String sobre la que se va a guardar la linea leida
 	int SubString = 0;	// Indica la posicion donde comenza la siguiente palabra a guardar
-	int numero;			
-	int j = 0;			
+	int numero;
+	int j = 0;
 	int i = 0;
 
 	//Se inizia leyendo la linea del flujo de entrada
@@ -23,7 +23,7 @@ void ParseLine(string * & Destino, istream & is, int & ContadorComas = 0){
 	for ( i = 0; i < (Entrada.length() - 1); ++i){
 		if(Entrada[i] == ','){
 			ContadorComas++;
-		}	
+		}
 	}
 	ContadorComas++;
 
@@ -37,23 +37,23 @@ void ParseLine(string * & Destino, istream & is, int & ContadorComas = 0){
 			Destino[j].assign(Entrada, SubString, i - SubString);
 			SubString = i + 1;
 			j++;
-		}	
+		}
 	}
 	Destino[j].assign(Entrada, SubString, i - SubString + 1);	// Se le suma uno porque el elemento final no es una coma
 
 }
-
-// Se llama para parcear la primera linea del archivo que contiene los datos. La funcion procesa los Ids de cada columna y 
+*/
+// Se llama para parcear la primera linea del archivo que contiene los datos. La funcion procesa los Ids de cada columna y
 // setea el objeto red con los ids y las columnas
 status_t ParseFirstLine(istream & is, Red & Object){  // Este supuestamente esta ok con una duda
 	string * Parsed;
 	string Read, aux;
 	stringstream StringRead;
-	int Comas, i = 0;
+	int Comas = 0, i = 0;
 	char c;
 	bool eol;
 
-	// Lee la primera linea del archivo 
+	// Lee la primera linea del archivo
 	if(!(getline(is, Read))){
 		return ST_ERROR_FILE_CORRUPTED;
 	}
@@ -62,18 +62,17 @@ status_t ParseFirstLine(istream & is, Red & Object){  // Este supuestamente esta
 	for ( i = 0; i < (Read.length() - 1); ++i){
 		if(Read[i] == ','){
 			Comas++;
-		}	
+		}
 	}
 	Comas++; // Se suma uno porque hay una palabra mas que comas
-	Parsed = new str
-	ing[Comas];
+	Parsed = new string[Comas];
 
-	// Se pasa el string a un streamstring para utilizar el operador >> para recivir los strings
+	// Se pasa el string a un streamstring para utilizar el operador >> para recibir los strings
 
-	i = 0
+	i = 0;
 	stringstream StringRead(Read);
 	while((StringRead >> aux) && (!StringRead.eof())){  // la duda es sobre el eof????????????????
-		if(aux[aux.length() - 1] == ','){	// Si se leyo tambien la coma porque estaba pegada se la vuelte a poner en el string
+		if(aux[aux.length() - 1] == ','){	// Si se leyo tambien la coma porque estaba pegada se la vuelve a poner en el string
 			StringRead.putback(',');
 			Parsed[i].assign(aux, 0, aux.length() - 1); // Se copia todo el string en parsed salvo la coma final que no pertenece al ID
 		}else{
@@ -81,12 +80,12 @@ status_t ParseFirstLine(istream & is, Red & Object){  // Este supuestamente esta
 		}
 
 		c = is.peek();
-		if((c == 'c') && (i < Comas)){
+		if(c == 'c' && i < Comas){
 			StringRead.ignore();
-		}else if((c == 'c') && (i == Comas)){	// no puede haber la misma cantidad de palabras que de comas
+		}else if(c == 'c' && i == Comas){	// no puede haber la misma cantidad de palabras que de comas
 			return ST_ERROR_FILE_CORRUPTED;
 		}
-		++;
+		i++;
 	}
 
 	Object.SetSensors(Parsed, Comas);
@@ -117,11 +116,11 @@ status_t ParsedData(istream & is, Red & Object){
 				StringRead.ignore();
 			}else if((ch != ',') || ((ch == ',') && (i < Object.GetLeng()))){
 				return ST_ERROR_FILE_CORRUPTED;
-			} 
+			}
 			i++;
 		}
 		Object.Append(Data);
-	}	
+	}
 
 	delete [] Data;
 
@@ -137,16 +136,16 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 
 // Se comienza la iteracion copiando la primera linea del programa, si no hay linea no hace nada
 	while(getline(is, Read)){
-		BigQuery = false;	
+		BigQuery = false;
 		stringstream StringRead(Read);
 
 		// Se hace con un if porque si no lee nada entonce pasa a la siguiente linea
 		if(!(StringRead >> aux)){
-			continue;			
+			continue;
 		}
 		if((aux.length() == 1) && aux[0] == ','){	// Si solo hay una coma en el string auxiliar significa que no hay Id, por lo que es un BigQuery. Se vuelve a introducir la coma en el streram
 			BigQuery = true;
-			StringRead.putback(',');			
+			StringRead.putback(',');
 		}
 		if(BigQuery == false){
 			if(aux[aux.length() - 1] == ','){			// Se verifica si se introdujo la coma en el string auxiliar
@@ -169,7 +168,7 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		if(!(is >> Start)){
 			Object.SetQueryStatus(true);
 			Object.PrintPackage();
-			continue;			
+			continue;
 		}
 		ch = is.peek();
 		if(ch != ','){
@@ -182,10 +181,10 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		if(!(is >> End)){
 			Object.SetQueryStatus(true);
 			Object.PrintPackage();
-			continue;			
+			continue;
 		}
 
-		// Se hacen las Querys 
+		// Se hacen las Querys
 
 		if(BigQuery){
 			Object.MakeBigQuery(Start, End);

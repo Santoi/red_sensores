@@ -23,10 +23,10 @@ class Red {
 private:
 
 	string * _Ids;
-	ArrayDouble ** _Sensores;
+	ArrayDouble ** _Sensors;
 	Package  * _Pack;
 
-	int _Amaunt;    // Cantidad de sensores almacenados
+	int _Amount;    // Cantidad de sensores almacenados
 
 	void CreateVectors(int);
 
