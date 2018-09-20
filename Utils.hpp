@@ -15,12 +15,3 @@ status_t ParsedData(istream & is, Red & Object);
 status_t ManageQuerys(istream & is, ostream & os, Red & Object);
 
 #endif
-
-
-
-
-
-
-
-
-

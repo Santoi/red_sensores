@@ -83,7 +83,9 @@ void Red::PrintPackage(std::ostream & os){
 		os << MSG_BAD_QUERY << std::endl;
 	}else if(_Pack.GetRangeStaus()){
 		os << MSG_BAD_RANGE << std::endl;
-	}else{
+	}else if(_Pack.GetIdStatus())
+		os << 										//santi completa aca
+	else{
 		os << _Pack.GetAverage() << ',' << _Pack.GetMin() << ',' 	\\
 			<< _Pack.GetMax() << ',' << _Pack.GetQuantity() << std::endl;
 	}
@@ -91,17 +93,46 @@ void Red::PrintPackage(std::ostream & os){
 }
 
 void Red::MakeSmallQuery(string ID, int Start, int End){
+	size_t i,j;
 	int FinalMark;
+	Package aux;
 
-	if(Start > _Sensors[].UsedSize()){
+	aux.clear();
+
+	_BadId = true;
+
+	for (i = 0; i < _Amount; i++) {
+		if (!_Ids[i].compare(ID)) {
+			_BadId = false;
+			break;
+		}
+	}
+	if (_BadId == true)
+		return;
+
+
+	if(Start > _Sensors[i].UsedSize()){
 		_Pack.SetRangeStatus(true);
 	}
 
-	if(End > _Sensors[].UsedSize()){
-		FinalMark = _Sensors[].UsedSize();
+	if(End > _Sensors[i].UsedSize()){
+		FinalMark = _Sensors[i].UsedSize();
 	}else{
 		FinalMark = End;
 	}
+	aux.SetQuantity(FinalMark - Start);
+
+	for (j = Start; j < FinalMark; j++){
+		aux.SetAverage(aux.GetAverage() + _Sensors[i][j] / aux.GetQuantity());
+		if(_Sensors[i][j] < aux.GetMin()){
+			aux.SetMin(_Sensors[i][j]);
+		}
+		if(_Sensors[i][j] > aux.GetMax()){
+			aux.SetMax(_Sensors[i][j]);
+		}
+	}
+
+	_Pack = aux;
 }
 
 void Red::MakeBigQuery(int Start, int End){

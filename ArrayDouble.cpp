@@ -110,21 +110,3 @@ void ArrayDouble::Append(const double d){
 ArrayDouble::~ArrayDouble(){
 	delete [] _Array;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
