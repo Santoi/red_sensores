@@ -41,7 +41,7 @@ status_t ParsedData(istream & is, Red & Object){
 
 	delete [] Data;
 
-	return OK;
+	return ST_OK;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,13 +98,13 @@ status_t ParseFirstLine(istream & is, Red & Object){  // Este supuestamente esta
 		}else if(ch != ','){
 			return ST_ERROR_FILE_CORRUPTED;
 		}
-	}	
+	}
 */
 
 	Object.SetSensors(Parsed, Comas);
 	delete [] Parsed;
 
-	return OK;
+	return ST_OK;
 }
 
 status_t ManageQuerys(istream & is, ostream & os, Red & Object){
@@ -173,13 +173,13 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		// Se impreime en el archivo el resultado
 		Object.PrintPackage(os);
 	}
-	return OK;
+	return ST_OK;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 										//Cuarta version
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-status_t ParseFirstLine(istream & is, Red & Object){ 
+status_t ParseFirstLine(istream & is, Red & Object){
 	string * Parsed;
 	string Read;
 	stringstream StringRead;
@@ -199,14 +199,14 @@ status_t ParseFirstLine(istream & is, Red & Object){
 	}
 
 	// Llama a una funcion que separa a los varios substrings en funcion del divisor que se utiliza
-	if((status = DivideString(Read, Parsed, ',')) && (status != OK)){
+	if((status = DivideString(Read, Parsed, ',')) && (status != ST_OK)){
 		return status;
 	}
 
 	Object.SetSensors(Parsed, Comas + 1);
 	delete [] Parsed;
 
-	return OK;
+	return ST_OK;
 }
 
 
@@ -236,7 +236,7 @@ status_t DivideString(string & Read, string * & Parsed, char Divisor){
 		}
 	}
 
-	return OK;
+	return ST_OK;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,7 +279,7 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		}
 
 		if(ComplexQuery == true){
-			if((status = DivideString(aux, Sensor, ';')) && (status != OK)){
+			if((status = DivideString(aux, Sensor, ';')) && (status != ST_OK)){
 				return status;
 			}
 		}else{
@@ -324,23 +324,5 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		// Se impreime en el archivo el resultado
 		Object.PrintPackage(os);
 	}
-	return OK;
+	return ST_OK;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
