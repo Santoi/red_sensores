@@ -100,19 +100,6 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 
 	aux.clear();
 
-	// Esto esta mal porque _BadId es un elemento privado del Package, hay que acceder a partir de los geters y los sseters
-	_BadId = true;
-
-	for (i = 0; i < _Amount; i++) {
-		if (!_Ids[i].compare(ID)) {	
-			_BadId = false;
-			break;
-		}
-	}
-	if (_BadId == true){
-		return;
-	}
-	/*
 	aux.SetIdStatus(true);
 	for(i = 0; i < _Amount; i++){
 		if(!(_Ids[i].compare(ID))){
@@ -122,14 +109,13 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 	}
 	if(aux.GetIdStatus()){
 		_Pack = aux;
-		return
+		return;
 	}
-	*/
 
 	// Verifio si el intervalo esta en los Arreglos
 	if(Start > _Sensors[i].UsedSize()){
 		_Pack.SetRangeStatus(true);
-	}	
+	}
 	if(End > _Sensors[i].UsedSize()){
 		FinalMark = _Sensors[i].UsedSize();
 	}else{
@@ -205,7 +191,7 @@ void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End
 	Package aux;
 	bool Init = false;
  	int i, j, k;
- 	
+
 	aux.clear();
 
 	// Verifio si el intervalo esta en los Arreglos
