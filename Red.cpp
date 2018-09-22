@@ -73,7 +73,7 @@ void SetSensors(string * Names, int Number){	// Number indica la cantidad de str
 	_Ids = new (ArrayDouble*)[Number];		// Se crean los arrays vacios
 	/** no deberian ser punteros a strings? **/
 	for (int i = 0; i < Number; ++i){
-		_Sensors[i] = new ArrayDouble[INITIAL_LENGTH_VECTOR];
+		_Sensors[i] = new ArrayDouble(INITIAL_LENGTH_VECTOR);
 	}
 
 	_Amount = Number; // Se le asigna la nueva cantidad de sesores
