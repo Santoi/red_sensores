@@ -26,7 +26,7 @@ private:
 	ArrayDouble ** _Sensors;
 	Package  * _Pack;
 
-	int _Amount;    // Cantidad de sensores almacenados
+	int _Amount;   		// Cantidad de sensores almacenados
 
 	void CreateVectors(int);
 
@@ -37,10 +37,11 @@ public:
 	Red(cons Red &);
 	int GetLeng(void);
 	void SetSensors(string * &, int);
-	void PrintPackage(std::ostream &);	//Impresion de los datos acumulados en el paquetem se imprime en el stream que se le pasa y lo hace con formato
-	void MakeSmallQuery(string, int, int);	//Le paso un string con la ID del sensor y los rangos para hacer el query
-	void MakeBigQuery(int, int);			//Le paso los rangos para hacer la query ya que lo hace sobre todos los sensores
-	void AppendRow(double *);
+	void PrintPackage(std::ostream &);					//Impresion de los datos acumulados en el paquetem se imprime en el stream que se le pasa y lo hace con formato
+	void MakeSmallQuery(string, int, int);				//Le paso un string con la ID del sensor y los rangos para hacer el query
+	void MakeBigQuery(int, int);						//Le paso los rangos para hacer la query ya que lo hace sobre todos los sensores
+	void MakeComplexQuery(string * &, int, int, int);	//Le paso un vector de strings con los Ids de los sensores, la cantidad de sensores y los rangos para el query
+	void AppendRow(double * &);
 	~Red();
 };
 

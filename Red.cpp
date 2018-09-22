@@ -50,33 +50,33 @@ int GetLeng(void){
 	return _Amount;
 }
 
-void SetSensors(string * Names, int Number){	// Number indica la cantidad de strings que tiene el puntero Names
+void SetSensors(string * Names, int Number){
+	// Number indica la cantidad de strings que tiene el puntero Names
 	string * aux;
 
-	aux = new string[Number];		// Se crea un vector independiente para que el objeto red tenga su propio vector
+	aux = new string[Number];					// Se crea un vector independiente de strings para que el objeto red tenga su propio vector
 	for (int i = 0; i < Number; ++i){
 		aux[i] = Names[i];
 	}
 
-	if(_Ids != NULL){			// Si el objeto ya tenia Ids asignados se los borra
+	if(_Ids != NULL){							// Si el objeto ya tenia Ids asignados se los borra
 		delete [] _Ids;
 	}
 	_Ids = aux;
 
-	if(_Sensors != NULL){		// Si ya se tenia una tabla de valores se la borra
+	if(_Sensors != NULL){						// Si ya se tenia una tabla de valores se la borra
 		for (int i = 0; i < _Amount; ++i){
 			delete[] _Sensors[i];
 		}
 		delete[] _Sensors;
 	}
 
-	_Ids = new (ArrayDouble*)[Number];		// Se crean los arrays vacios
-	/** no deberian ser punteros a strings? **/
-	for (int i = 0; i < Number; ++i){
+	_Ids = new (ArrayDouble*)[Number];			// Se crean los arrays de doubles vacios
+	for(int i = 0; i < Number; ++i){
 		_Sensors[i] = new ArrayDouble(INITIAL_LENGTH_VECTOR);
 	}
 
-	_Amount = Number; // Se le asigna la nueva cantidad de sesores
+	_Amount = Number; 							// Se le asigna la nueva cantidad de sesores
 }
 
 void Red::PrintPackage(std::ostream & os){
@@ -100,28 +100,51 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 
 	aux.clear();
 
+	// Esto esta mal porque _BadId es un elemento privado del Package, hay que acceder a partir de los geters y los sseters
 	_BadId = true;
 
 	for (i = 0; i < _Amount; i++) {
-		if (!_Ids[i].compare(ID)) {
+		if (!_Ids[i].compare(ID)) {	
 			_BadId = false;
 			break;
 		}
 	}
-	if (_BadId == true)
+	if (_BadId == true){
 		return;
+	}
+	/*
+	aux.SetIdStatus(true);
+	for(i = 0; i < _Amount; i++){
+		if(!(_Ids[i].compare(ID))){
+			aux.SetIdStatus(false);
+			break;
+		}
+	}
+	if(aux.GetIdStatus()){
+		_Pack = aux;
+		return
+	}
+	*/
 
-
+	// Verifio si el intervalo esta en los Arreglos
 	if(Start > _Sensors[i].UsedSize()){
 		_Pack.SetRangeStatus(true);
-	}
-
+	}	
 	if(End > _Sensors[i].UsedSize()){
 		FinalMark = _Sensors[i].UsedSize();
 	}else{
 		FinalMark = End;
 	}
+
+	// Si el rango esta mal salgo del query
+	if(_Pack.GetRangeStatus())
+		return;
+
 	aux.SetQuantity(FinalMark - Start);
+
+	// Hay que setearlos de esta manera ya que en el vector puede ser que el minimo sea mayor que 0 o el maximo menor que 0
+	aux.SetMin(_Sensors[i][Start]);
+	aux.SetMax(_Sensors[i][Start]);
 
 	for (j = Start; j < FinalMark; j++){
 		aux.SetAverage(aux.GetAverage() + _Sensors[i][j] / aux.GetQuantity());
@@ -137,22 +160,30 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 }
 
 void Red::MakeBigQuery(int Start, int End){
-	int FinalMark;	// Indica donde termina la iteracion
+	int FinalMark;		// Indica donde termina la iteracion
 	Package aux;
 
 	aux.clear();
 
+	// Verifio si el intervalo esta en los Arreglos
 	if(Start > _Sensors[0].UsedSize()){
 		_Pack.SetRangeStatus(true);
 	}
-
 	if(End > _Sensors[0].UsedSize()){
 		FinalMark = _Sensors[0].UsedSize();
 	}else{
 		FinalMark = End;
 	}
 
+	// Si el rango esta mal salgo del query
+	if(_Pack.GetRangeStaus())
+		return;
+
 	aux.SetQuantity(_Amount * (FinalMark - Start));
+
+	// Hay que setearlos de esta manera ya que en el vector puede ser que el minimo sea mayor que 0 o el maximo menor que 0
+	aux.SetMin(_Sensors[0][Start]);
+	aux.SetMax(_Sensors[0][Start]);
 
 	for (int i = 0; i < _Amount; ++i){
 		for (int j = Start; j < FinalMark; ++j){
@@ -169,7 +200,78 @@ void Red::MakeBigQuery(int Start, int End){
 	_Pack = aux;
 }
 
-void Red::AppendRow(double * Data){
+void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End){
+	int FinalMark;						// Indica donde termina la iteracion
+	Package aux;
+	bool Init = false;
+ 	int i, j, k;
+ 	
+	aux.clear();
+
+	// Verifio si el intervalo esta en los Arreglos
+	if(Start > _Sensors[0].UsedSize()){
+		_Pack.SetRangeStatus(true);
+	}
+	if(End > _Sensors[0].UsedSize()){
+		FinalMark = _Sensors[0].UsedSize();
+	}else{
+		FinalMark = End;
+	}
+
+	// Si el rango esta mal salgo del query
+	if(_Pack.GetRangeStaus())
+		return;
+
+	aux.SetQuantity(SensorQuantity * (FinalMark - Start));
+
+	// Cuardo el query es complejo hay que encontrar el primer array indicado para setear los valores iniciales de minimo y maximo
+	aux.SetIdStatus(true);
+	for(i = 0; i < _Amount; i++){
+		if(!(_Ids[i].compare(ID))){
+			aux.SetIdStatus(false);
+			break;
+		}
+	}
+	if(aux.GetIdStatus()){
+		_Pack = aux;
+		return
+	}
+
+	// Hay que setearlos de esta manera ya que en el vector puede ser que el minimo sea mayor que 0 o el maximo menor que 0
+	aux.SetMin(_Sensors[i][Start]);
+	aux.SetMax(_Sensors[i][Start]);
+
+	//	Finalmente hago el analisis de los datos
+	for(i = 0; i < SensorQuantity; ++i){
+		// Recorro para comprobar si el Id esta entre los sensores y en que posicion
+		aux.SetIdStatus(true);
+		for(j = 0; j < _Amount; j++){
+			if(!(_Ids[j].compare(ID[i]))){
+				aux.SetIdStatus(false);
+				break;
+			}
+		}
+		if(aux.GetIdStatus()){
+			_Pack = aux;
+			return
+		}
+
+		// Una vez identificado el sensor al que se pide, se analiza la informacion
+		for(k = Start; k < FinalMark; k++){
+			aux.SetAverage(aux.GetAverage() + _Sensors[j][k] / aux.GetQuantity());
+			if(_Sensors[j][k] < aux.GetMin()){
+				aux.SetMin(_Sensors[j][k]);
+			}
+			if(_Sensors[j][k] > aux.GetMax()){
+				aux.SetMax(_Sensors[j][k]);
+			}
+		}
+	}
+
+	_Pack = aux;
+}
+
+void Red::AppendRow(double * & Data){
 	for (int i = 0; i < _Amount; ++i){
 		_Sensors[i].Append(Data[i]);
 	}

@@ -16,7 +16,7 @@ private:
 	int _Used;
 	double * _Array;
 
-	ArrayDouble();
+	ArrayDouble();		// Este metodo es privao debido a que no se quiere que se cree un Array con un nunmero de elementos no definido
 
 public:
 
