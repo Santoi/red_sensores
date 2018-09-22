@@ -10,7 +10,7 @@
 
 // Se llama para parcear la primera linea del archivo que contiene los datos. La funcion procesa los Ids de cada columna y
 // setea el objeto red con los ids y las columnas
-s
+
 
 status_t ParsedData(istream & is, Red & Object){
 	string Read;
@@ -36,7 +36,7 @@ status_t ParsedData(istream & is, Red & Object){
 			}
 			i++;
 		}
-		Object.Append(Data);
+		Object.AppendRow(Data);
 	}
 
 	delete [] Data;
@@ -72,7 +72,7 @@ status_t ParseFirstLine(istream & is, Red & Object){  // Este supuestamente esta
 
 	// Se pasa el string a un streamstring para utilizar el operador >> para recibir los strings
 
-	stringstream StringRead(Read);
+	stringstream StringRead(Read); /** esto no está ya declarado? **/
 
 	for ( i = 0; i < Comas; ++i){
 		Parsed[i].clear();
@@ -80,6 +80,7 @@ status_t ParseFirstLine(istream & is, Red & Object){  // Este supuestamente esta
 			Parsed[i] += ch;
 		}
 		ch = StringRead.peek(); ////////////////// que pasas cuando hace peek y es el final del string
+													/** devuelve EOF **/
 		if(ch == ','){
 			StringRead.ignore();
 		}

@@ -37,12 +37,24 @@ static fstream ofs;
 /********************* Cuerpo principal *********************/
 
 int main(int argc, char * const argv[]){
-	
+
+	status_t st;
+	Red /**variable red**/;
+
 	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente.
 	cmdl.parse(argc, argv);	// Metodo de parseo de la clase cmdline. Settea las variables globales
+	/** parseo 1era linea **/
+	if (st != ST_OK) {
+		PrintError(st);
+		return EXIT_FAILURE;
+	}
+	/** parseo resto del data-file **/
+	if (st != ST_OK) {
+		PrintError(st);
+		return EXIT_FAILURE;
+	}
+	/**variable red**/.PrintPackage(oss);
 
-	
-	
 	return 0;
 }
 

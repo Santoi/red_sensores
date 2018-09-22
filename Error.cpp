@@ -13,5 +13,8 @@ void PrintError (status_t &st) {
 	};
 
 	if (st != ST_OK)
-		cerr << MSG_ERROR_PREFIX << ": " << error[st] << endl;
+		cerr << MSG_ERROR_PREFIX
+		     << ": "
+		     << error[st]
+		     << endl;
 }
