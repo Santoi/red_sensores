@@ -9,6 +9,9 @@
 #include <cstdlib>
 #include <string>
 
+#include "Error.hpp"
+#include "Red.hpp"
+
 #define LINE_DIVIDER ','
 #define SENSOR_DIVIDER ';'
 

@@ -1,5 +1,5 @@
-#ifndef _ERROR_H_INCLUDED_
-#define _ERROR_H_INCLUDED_
+#ifndef _ERROR_HPP_INCLUDED_
+#define _ERROR_HPP_INCLUDED_
 
 #define MAX_ERROR_STR 50
 #define MSG_NO_ERROR "There is no error"
@@ -8,6 +8,8 @@
 #define MSG_ERROR_FILE_CORRUPTED "file corrupted"
 #define MSG_ERROR_NO_MEMORY "not enough memory"
 #define MSG_MISSING_DATA_FILE "data file is missing"
+#define MSG_BAD_QUERY "bad query"
+
 
 typedef enum {
 	ST_OK,
@@ -15,6 +17,7 @@ typedef enum {
 	ST_ERROR_FILE_CORRUPTED,
 	ST_ERROR_NO_MEMORY,
 	ST_NO_DATA_FILE,
+	ST_ERROR_BAD_QUERY
 } status_t;
 
 void PrintError (status_t &st);

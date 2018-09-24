@@ -16,7 +16,8 @@ status_t ParseFirstLine(istream & is, Red & Object){
 	string * Parsed;
 	string Read;
 	stringstream StringRead;
-	int Comas = 0, i;
+	status_t status;
+	int Comas = 0, i, len;
 	char ch;
 
 	// Lee la primera linea del archivo
@@ -25,18 +26,20 @@ status_t ParseFirstLine(istream & is, Red & Object){
 	}
 
 	// Recorre la linea para establecer la cantidad de strings que hace falta
-	for ( i = 0; i < (Read.length() - 1); ++i){
+	len = Read.length() - 1;
+	for (i = 0; i < len; ++i){
 		if(Read[i] == LINE_DIVIDER){
 			Comas++;
 		}
 	}
 
 	// Llama a una funcion que separa a los varios substrings en funcion del divisor que se utiliza
-	if((status = DivideString(Read, Parsed, LINE_DIVIDER)) && (status != ST_OK)){
+	status = DivideString(Read, Parsed, LINE_DIVIDER);
+	if(status != ST_OK){
 		return status;
 	}
 
-	// Se setea la cantidad de sensores y sus Ids en el objeto 
+	// Se setea la cantidad de sensores y sus Ids en el objeto
 	Object.SetSensors(Parsed, Comas + 1);
 	delete [] Parsed;
 
@@ -53,9 +56,9 @@ status_t ParsedData(istream & is, Red & Object){
 
 	Data = new double[Object.GetLeng()];
 
-	// Lee linea por linea 
+	// Lee linea por linea
 	while(getline(is, Read)){
-		// Se pasa el string a un streamstring para utilizar el operador >> para recibir los strings de caracter a caracter	
+		// Se pasa el string a un streamstring para utilizar el operador >> para recibir los strings de caracter a caracter
 		stringstream StringRead(Read);
 		i = 0;
 		while((StringRead >> Number)){
@@ -87,7 +90,7 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		BigQuery = false;
 		ComplexQuery = false;
 
-		// Se pasa el string a un streamstring para utilizar el operador >> para recibir los strings de caracter a caracter	
+		// Se pasa el string a un streamstring para utilizar el operador >> para recibir los strings de caracter a caracter
 		stringstream StringRead(Read);
 
 		if(!(StringRead >> ch))
@@ -101,7 +104,7 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 			aux.clear();
 			aux += ch;
 			// Se lee el resto del Id mientras se fija si hay varios sensores o no. Si hay varios sensores lo marca con un flag y se lo procesa.
-			while((ch = StringRead.peek()) && (ch != LINE_DIVIDER)){	
+			while((ch = StringRead.peek()) && (ch != LINE_DIVIDER)){
 				if(ch == SENSOR_DIVIDER){
 					ComplexQuery = true;
 				}

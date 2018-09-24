@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+using namespace std;
 
 #include "ArrayDouble.hpp"
 #include "Package.hpp"
@@ -15,6 +16,7 @@
 
 #define MSG_BAD_RANGE "NO DATA"
 #define MSG_BAD_QUERY "BAD QUERY"
+#define MSG_BAD_ID "NO ID"
 
 #define INITIAL_LENGTH_VECTOR 25
 
@@ -34,7 +36,7 @@ public:
 
 	Red();
 	Red(int);
-	Red(cons Red &);
+	Red(const Red &);
 	int GetLeng(void);
 	void SetSensors(string * &, int);
 	void PrintPackage(std::ostream &);					//Impresion de los datos acumulados en el paquetem se imprime en el stream que se le pasa y lo hace con formato

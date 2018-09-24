@@ -20,7 +20,7 @@ Red::Red(){
 
 Red::Red(int Number){
 	_Ids = new string[Number];
-	_Sensors = new (ArrayDouble*)[Number];
+	_Sensors = new ArrayDouble*[Number];
 	for (int i = 0; i < Number; ++i){
 		_Sensors[i] = new ArrayDouble(INITIAL_LENGTH_VECTOR);
 	}
@@ -38,7 +38,7 @@ Red::Red(const Red & r){
 		_Ids[i] = r._Ids[i];
 	}
 
-	_Sensors = new (ArrayDouble*)[SensorSize];
+	_Sensors = new ArrayDouble*[SensorSize];
 	for (int i = 0; i < SensorSize; ++i){
 		_Sensors[i] = new ArrayDouble(*(r._Sensors[i]));
 	}
@@ -71,7 +71,7 @@ void SetSensors(string * Names, int Number){
 		delete[] _Sensors;
 	}
 
-	_Ids = new (ArrayDouble*)[Number];			// Se crean los arrays de doubles vacios
+	_Sensors = new ArrayDouble*[Number];			// Se crean los arrays de doubles vacios
 	for(int i = 0; i < Number; ++i){
 		_Sensors[i] = new ArrayDouble(INITIAL_LENGTH_VECTOR);
 	}
@@ -85,9 +85,9 @@ void Red::PrintPackage(std::ostream & os){
 	}else if(_Pack.GetRangeStaus()){
 		os << MSG_BAD_RANGE << std::endl;
 	}else if(_Pack.GetIdStatus())
-		os << 										//santi completa aca
+		os << MSG_BAD_ID << std::endl;
 	else{
-		os << _Pack.GetAverage() << ',' << _Pack.GetMin() << ',' 	\\
+		os << _Pack.GetAverage() << ',' << _Pack.GetMin() << ','
 			<< _Pack.GetMax() << ',' << _Pack.GetQuantity() << std::endl;
 	}
 	(*_Pack).Clear();
@@ -189,7 +189,6 @@ void Red::MakeBigQuery(int Start, int End){
 void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End){
 	int FinalMark;						// Indica donde termina la iteracion
 	Package aux;
-	bool Init = false;
  	int i, j, k;
 
 	aux.clear();
