@@ -17,8 +17,7 @@ status_t ParseFirstLine(istream & is, Red & Object){
 	string Read;
 	stringstream StringRead;
 	status_t status;
-	int Comas = 0, i, len;
-	char ch;
+	size_t i, len, Comas = 0;
 
 	// Lee la primera linea del archivo
 	if(!(getline(is, Read))){
@@ -80,7 +79,8 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 	string Read, aux;
 	string * Sensor;
 	stringstream StringRead;
-	int i, Start, End, SensorsQuantity = 0;
+	size_t i, len;
+	int Start, End, SensorsQuantity = 0;
 	char ch;
 	bool BigQuery, ComplexQuery;
 	status_t status;
@@ -116,13 +116,15 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		// Se procesa el string auxiliar si hay varios Ids en el query
 		if(ComplexQuery == true){
 			// Recorre la linea para establecer la cantidad de strings que hace falta
-			for(i = 0; i < (aux.length() - 1); ++i){
+			len = aux.length() - 1;
+			for(i = 0; i < len; ++i){
 				if(Read[i] == SENSOR_DIVIDER){
 					SensorsQuantity++;
 				}
 			}
 			// Se llama a una funcion que te separa los Ids en diferentes strings
-			if((status = DivideString(aux, Sensor, SENSOR_DIVIDER)) && (status != ST_OK)){
+			status = DivideString(aux, Sensor, SENSOR_DIVIDER);
+			if (status != ST_OK){
 				return status;
 			}
 		}else if(BigQuery == false){
@@ -133,35 +135,35 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		// Se procesa las comas y los numero enteros
 		ch = is.peek();
 		if(ch != LINE_DIVIDER){
-			Object.SetQueryStatus(true);
-			Object.PrintPackage();
+			Object.GetPackage()->SetQueryStatus(true);
+			Object.PrintPackage(os);
 			continue;
 		}else{
 			is.ignore();
 		}
 		if(!(is >> Start)){
-			Object.SetQueryStatus(true);
-			Object.PrintPackage();
+			Object.GetPackage()->SetQueryStatus(true);
+			Object.PrintPackage(os);
 			continue;
 		}
 		ch = is.peek();
 		if(ch != LINE_DIVIDER){
-			Object.SetQueryStatus(true);
-			Object.PrintPackage();
+			Object.GetPackage()->SetQueryStatus(true);
+			Object.PrintPackage(os);
 			continue;
 		}else{
 			is.ignore();
 		}
 		if(!(is >> End)){
-			Object.SetQueryStatus(true);
-			Object.PrintPackage();
+			Object.GetPackage()->SetQueryStatus(true);
+			Object.PrintPackage(os);
 			continue;
 		}
 
 		// Se hacen las Querys
 		if(BigQuery){
 			Object.MakeBigQuery(Start, End);
-		}else if{
+		}else if(ComplexQuery){
 			Object.MakeComplexQuery(Sensor, SensorsQuantity, Start, End);
 		}else{
 			Object.MakeSmallQuery(*Sensor, Start, End);
@@ -180,11 +182,12 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 status_t DivideString(string & Read, string * & Parsed, char Divider){
 	string  aux;
 	stringstream StringRead;
-	int Comas = 0, i;
+	size_t i, len, Comas = 0;
 	char ch;
 
 	// Recorre la linea para establecer la cantidad de strings que hace falta
-	for(i = 0; i < (Read.length() - 1); ++i){
+	len = Read.length() - 1;
+	for(i = 0; i < len; ++i){
 		if(Read[i] == Divider){
 			Comas++;
 		}

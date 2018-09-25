@@ -46,7 +46,7 @@ ArrayDouble::ArrayDouble(const ArrayDouble & Original){
 	}
 }
 
-double ArrayDouble::UsedSize(){
+int ArrayDouble::UsedSize() const{
 	return _Used;
 }
 
@@ -76,7 +76,7 @@ void ArrayDouble::Append(const double d){
 
 	//Si el Array no esta lleno, agrego el nuevo numero
 	if(_Used < _Leng){
-		Array[_Used] = d;
+		_Array[_Used] = d;
 		_Used ++;
 	}else{	// Si el Array esta lleno, hay qe alargarlo antes de incertar
 			//el numero nuevo
@@ -94,7 +94,7 @@ void ArrayDouble::Append(const double d){
 
 		//Se rellena el nuevo Array con los datos almacenados en el
 		// arreglo auxiliar
-		for(i = 0; i < _Used; i++){
+		for(int i = 0; i < _Used; i++){
 			_Array[i] = aux[i];
 		}
 

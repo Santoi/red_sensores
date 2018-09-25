@@ -85,7 +85,7 @@ void Package::Clear(void){
 	_Average = 0;
 	_Min = 0;
 	_Max = 0;
-	_Quantity = 0
+	_Quantity = 0;
 	_BadRange = false;
 	_BadQuery = false;
 }
@@ -99,7 +99,7 @@ Package & Package::operator=(const Package & p){
 	_BadRange = p._BadRange;
 	_BadQuery = p._BadQuery;
 
-	return *this;	
+	return *this;
 }
 
 Package::~Package(){
