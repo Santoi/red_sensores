@@ -9,6 +9,9 @@
 #include <cstdlib>
 
 #include "Cmdline.hpp"
+#include "Red.hpp"
+#include "Error.hpp"
+#include "Utils.hpp"
 
 using namespace std;
 
@@ -39,23 +42,22 @@ static fstream ofs;
 int main(int argc, char * const argv[]){
 
 	status_t st;
-	Red /**variable red**/;
+	Red SensorNet;
 
 	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente.
 	cmdl.parse(argc, argv);	// Metodo de parseo de la clase cmdline. Settea las variables globales
-	/** parseo 1era linea **/
-	if (st != ST_OK) {
-		PrintError(st);
-		return EXIT_FAILURE;
-	}
-	/** parseo resto del data-file **/
-	if (st != ST_OK) {
-		PrintError(st);
-		return EXIT_FAILURE;
-	}
-	/**variable red**/.PrintPackage(oss);
 
-	return 0;
+	if ((st = ParseAll(*iss, SensorNet)) != ST_OK){
+		PrintError(st);
+		return EXIT_FAILURE;
+	}
+
+	if ((st = ManageQuerys(*iss, *oss, SensorNet)) != ST_OK){
+		PrintError(st);
+		return EXIT_FAILURE;
+	}
+
+	return EXIT_SUCCESS;
 }
 
 /********************* Funciones de parceo *********************/

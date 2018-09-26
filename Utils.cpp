@@ -5,74 +5,27 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <sstream>
 
 #include "Utils.hpp"
+#include "Red.hpp"
+#include "Error.hpp"
+#include "Package.hpp"
 
+status_t ParseFirstLine(istream & is, Red & Object);
+status_t ParsedData(istream & is, Red & Object);
 status_t DivideString(string & Read, string * & Parsed, char Divider);
 
 // Se llama para parcear la primera linea del archivo que contiene los datos. La funcion procesa los Ids de cada columna y
 // setea el objeto red con los ids y las columnas
-status_t ParseFirstLine(istream & is, Red & Object){
-	string * Parsed;
-	string Read;
-	stringstream StringRead;
-	status_t status;
-	size_t i, len, Comas = 0;
 
-	// Lee la primera linea del archivo
-	if(!(getline(is, Read))){
-		return ST_ERROR_FILE_CORRUPTED;
-	}
-
-	// Recorre la linea para establecer la cantidad de strings que hace falta
-	len = Read.length() - 1;
-	for (i = 0; i < len; ++i){
-		if(Read[i] == LINE_DIVIDER){
-			Comas++;
-		}
-	}
-
-	// Llama a una funcion que separa a los varios substrings en funcion del divisor que se utiliza
-	status = DivideString(Read, Parsed, LINE_DIVIDER);
-	if(status != ST_OK){
-		return status;
-	}
-
-	// Se setea la cantidad de sensores y sus Ids en el objeto
-	Object.SetSensors(Parsed, Comas + 1);
-	delete [] Parsed;
-
-	return ST_OK;
-}
-
-status_t ParsedData(istream & is, Red & Object){
-	string Read;
-	stringstream StringRead;
-	int i;
-	char ch;
-	double Number;
-	double * Data;
-
-	Data = new double[Object.GetLeng()];
-
-	// Lee linea por linea
-	while(getline(is, Read)){
-		// Se pasa el string a un streamstring para utilizar el operador >> para recibir los strings de caracter a caracter
-		stringstream StringRead(Read);
-		i = 0;
-		while((StringRead >> Number)){
-			Data[i] = Number;
-			if((StringRead >> ch) && (ch != LINE_DIVIDER)){
-				return ST_ERROR_FILE_CORRUPTED;
-			}
-			i++;
-		}
-		Object.AppendRow(Data);
-	}
-
-	// Se borra el el array de doubles que se utilizo como auxiliar
-	delete [] Data;
-	return ST_OK;
+status_t ParseAll(istream & is, Red & Object){
+	status_t st;
+	st = ParseFirstLine(is, Object);
+	if (st != ST_OK)
+		return st;
+	st = ParsedData(is, Object);
+	return st;
 }
 
 status_t ManageQuerys(istream & is, ostream & os, Red & Object){
@@ -179,9 +132,72 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 									// Funciones privadas
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+status_t ParseFirstLine(istream & is, Red & Object){
+	string * Parsed;
+	string Read;
+	stringstream StringRead;
+	status_t status;
+	size_t i, len, Comas = 0;
+
+	// Lee la primera linea del archivo
+	if(!(getline(is, Read))){
+		return ST_ERROR_FILE_CORRUPTED;
+	}
+
+	// Recorre la linea para establecer la cantidad de strings que hace falta
+	len = Read.length() - 1;
+	for (i = 0; i < len; ++i){
+		if(Read[i] == LINE_DIVIDER){
+			Comas++;
+		}
+	}
+
+	// Llama a una funcion que separa a los varios substrings en funcion del divisor que se utiliza
+	status = DivideString(Read, Parsed, LINE_DIVIDER);
+	if(status != ST_OK){
+		return status;
+	}
+
+	// Se setea la cantidad de sensores y sus Ids en el objeto
+	Object.SetSensors(Parsed, Comas + 1);
+	delete [] Parsed;
+
+	return ST_OK;
+}
+
+status_t ParsedData(istream & is, Red & Object){
+	string Read;
+	stringstream StringRead;
+	int i;
+	char ch;
+	double Number;
+	double * Data;
+
+	Data = new double[Object.GetLeng()];
+
+	// Lee linea por linea
+	while(getline(is, Read)){
+		// Se pasa el string a un streamstring para utilizar el operador >> para recibir los strings de caracter a caracter
+		stringstream StringRead(Read);
+		i = 0;
+		while((StringRead >> Number)){
+			Data[i] = Number;
+			if((StringRead >> ch) && (ch != LINE_DIVIDER)){
+				return ST_ERROR_FILE_CORRUPTED;
+			}
+			i++;
+		}
+		Object.AppendRow(Data);
+	}
+
+	// Se borra el el array de doubles que se utilizo como auxiliar
+	delete [] Data;
+	return ST_OK;
+}
+
 status_t DivideString(string & Read, string * & Parsed, char Divider){
 	string  aux;
-	stringstream StringRead;
+	//stringstream StringRead;
 	size_t i, len, Comas = 0;
 	char ch;
 

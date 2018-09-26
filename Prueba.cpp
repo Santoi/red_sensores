@@ -2,22 +2,22 @@
 	Archivo: Prueba.cpp
 */
 
-// Este archivo se va a usar para ir probando cosas del programa. Estas pueden 
+// Este archivo se va a usar para ir probando cosas del programa. Estas pueden
 // ser de cosas individuales o de cosas en bloques.
-// Este archivo de prueba va complementado con el archivo makePrueba que es 
-// un segundo archivo make file que se va a utilizar para las compilaciones 
+// Este archivo de prueba va complementado con el archivo makePrueba que es
+// un segundo archivo make file que se va a utilizar para las compilaciones
 // necesarias de las pruebas
-// Para utilizar los archivos de prueba se estructura el arbol de dependencias 
-// como siempre, lo unico que cambia es el metodo de compilacion. Para 
-// compilar el programa de prueba hay que ingresar 
-// el comando " make -f makePrueba" y compila utilizando el archibo make file 
+// Para utilizar los archivos de prueba se estructura el arbol de dependencias
+// como siempre, lo unico que cambia es el metodo de compilacion. Para
+// compilar el programa de prueba hay que ingresar
+// el comando " make -f makePrueba" y compila utilizando el archibo make file
 // que se le indico.
 
 // Por favor avisar si se modifica algno de los archivos con los que se estan
 // haciendo pruebas por que puede traer cambios en los resultados de los
 //  esteos
 
-// Muchas gracias y programe pronto 
+// Muchas gracias y programe pronto
 
 #include <fstream>
 #include <iomanip>
@@ -26,6 +26,10 @@
 #include <cstdlib>
 
 #include "Cmdline.hpp"
+#include "Utils.hpp"
+#include "Error.hpp"
+#include "Red.hpp"
+#include "ArrayDouble.hpp"
 
 using namespace std;
 
@@ -54,11 +58,28 @@ static fstream ofs;
 /********************* Cuerpo principal *********************/
 
 int main(int argc, char * const argv[]){
-	
+	Red SensorNet;
+	status_t st;
+
 	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente.
 	cmdl.parse(argc, argv);	// Metodo de parseo de la clase cmdline. Settea las variables globales
 
-	return 0;
+	if ((st = ParseAll(*iss, SensorNet)) != ST_OK) {
+		PrintError(st);
+		return EXIT_FAILURE;
+	}
+	int amount = SensorNet.GetAmount();
+
+	for (int i = 1; i < amount; i++) {
+		cout << "Id:" << i+1 << std::endl;
+		cout << SensorNet.GetId(i) << std::endl;
+		cout << "Data:" << std::endl;
+		SensorNet.PrintSensorData(i);
+		cout << endl << endl << endl;
+	}
+
+
+	return EXIT_SUCCESS;
 }
 
 /********************* Funciones de parceo *********************/

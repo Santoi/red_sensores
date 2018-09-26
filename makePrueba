@@ -5,14 +5,33 @@ FLAGS = -W -Wall -g -pedantic
 
 all: ejecprueba clear
 
-ejecprueba: Prueba.o Cmdline.o
-	$(CC) $(FLAGS) -o ejecprueba Prueba.o Cmdline.o
+ejecprueba: Pruebas.o Cmdline.o ArrayDouble.o Error.o Package.o Red.o Utils.o
+	$(CC) $(FLAGS) -o ejec Pruebas.o Cmdline.o ArrayDouble.o Error.o Package.o Red.o Utils.o
 
-Prueba.o: Prueba.cpp Cmdline.hpp
-	$(CC) $(FLAGS) -o Prueba.o -c Prueba.cpp
+Pruebas.o: Pruebas.cpp Cmdline.hpp Utils.hpp Error.hpp Red.hpp ArrayDouble.hpp
+	$(CC) $(FLAGS) -o Pruebas.o -c Pruebas.cpp
 
 Cmdline.o: Cmdline.cpp Cmdline.hpp
 	$(CC) $(FLAGS) -o Cmdline.o -c Cmdline.cpp
 
+ArrayDouble.o: ArrayDouble.cpp ArrayDouble.hpp
+	$(CC) $(FLAGS) -o ArrayDouble.o -c ArrayDouble.cpp
+
+Error.o: Error.cpp Error.hpp
+	$(CC) $(FLAGS) -o Error.o -c Error.cpp
+
+Package.o: Package.cpp Package.hpp
+	$(CC) $(FLAGS) -o Package.o -c Package.cpp
+
+Red.o: Red.cpp Red.hpp Package.hpp ArrayDouble.hpp Utils.hpp
+	$(CC) $(FLAGS) -o Red.o -c Red.cpp
+
+Utils.o: Utils.cpp Utils.hpp Red.hpp Error.hpp Package.hpp
+	$(CC) $(FLAGS) -o Utils.o -c Utils.cpp
+
+
+
 clear:
 	rm *.o
+
+

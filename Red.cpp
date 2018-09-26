@@ -101,7 +101,7 @@ void Red::PrintPackage(std::ostream & os){
 void Red::MakeSmallQuery(string ID, int Start, int End){
 	int i,j;
 	int FinalMark;
-	Package * aux;
+	Package * aux = NULL;
 
 	aux->Clear();
 
@@ -152,7 +152,7 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 
 void Red::MakeBigQuery(int Start, int End){
 	int FinalMark;		// Indica donde termina la iteracion
-	Package * aux;
+	Package * aux = NULL;
 
 	aux->Clear();
 
@@ -193,7 +193,7 @@ void Red::MakeBigQuery(int Start, int End){
 
 void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End){
 	int FinalMark;						// Indica donde termina la iteracion
-	Package * aux;
+	Package * aux = NULL;
  	int i, j, k;
 
 	aux->Clear();

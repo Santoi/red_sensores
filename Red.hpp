@@ -12,7 +12,6 @@ using namespace std;
 
 #include "ArrayDouble.hpp"
 #include "Package.hpp"
-#include "Utils.hpp"
 
 #define MSG_BAD_RANGE "NO DATA"
 #define MSG_BAD_QUERY "BAD QUERY"
@@ -46,12 +45,26 @@ public:
 	void MakeComplexQuery(string * &, int, int, int);	//Le paso un vector de strings con los Ids de los sensores, la cantidad de sensores y los rangos para el query
 	void AppendRow(double * &);
 	~Red();
-	/*int GetAmount() {return _Amount;}
+
+
+
+
+
+	int GetAmount() {return _Amount;}
 	string GetId(int pos) {
 		if (pos < 0 && pos >= _Amount)
 			return NULL;
 		return _Ids[pos];
-		}*/
+		}
+	void PrintSensorData(int pos){
+		int used = _Sensors[pos]->UsedSize();
+		cout << used << endl;
+		for(int i=0;i<used;i++){
+			cout << i+1 << ": ";
+			cout << (*_Sensors)[pos][i] << '\t';
+		}
+		cout << endl;
+	}
 };
 
 #endif
