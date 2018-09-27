@@ -55,13 +55,13 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 			aux.clear();
 			aux += ch;
 			// Se lee el resto del Id mientras se fija si hay varios sensores o no. Si hay varios sensores lo marca con un flag y se lo procesa.
-			while((ch = StringRead.peek()) && (ch != LINE_DIVIDER)){
+			while((StringRead >> ch) && (ch != LINE_DIVIDER)){
 				if(ch == SENSOR_DIVIDER){
 					ComplexQuery = true;
 				}
 				aux += ch;
-				StringRead.ignore();
 			}
+			StringRead.putback(LINE_DIVIDER);
 		}
 
 		// Se procesa el string auxiliar si hay varios Ids en el query

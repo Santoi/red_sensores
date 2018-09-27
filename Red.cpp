@@ -106,8 +106,6 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 
 	aux = new Package;
 
-	//	//aux->Clear();
-
 	aux->SetIdStatus(true);
 	for(i = 0; i < _Amount; i++){
 		if(!(_Ids[i].compare(ID))){
@@ -132,8 +130,10 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 	}
 
 	// Si el rango esta mal salgo del query
-	if(_Pack->GetRangeStatus())
+	if(_Pack->GetRangeStatus()){
+		delete aux;
 		return;
+	}
 
 	aux->SetQuantity(FinalMark - Start);
 
@@ -143,6 +143,7 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 
 	for (j = Start; j < FinalMark; j++){
 		aux->SetAverage(aux->GetAverage() + (*_Sensors[i])[j] / aux->GetQuantity());
+	//	std::cout << aux->GetAverage() << std::endl;
 		if((*_Sensors[i])[j] < aux->GetMin()){
 			aux->SetMin((*_Sensors[i])[j]);
 		}
@@ -206,7 +207,6 @@ void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End
 
 	aux = new Package;
 
-	//aux->Clear();
 
 	// Verifio si el intervalo esta en los Arreglos
 	if(Start > _Sensors[0]->UsedSize()){
