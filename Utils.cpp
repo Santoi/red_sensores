@@ -37,7 +37,6 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 	char ch;
 	bool BigQuery, ComplexQuery;
 	status_t status;
-
 	// Se comienza la iteracion copiando la primera linea del programa, si no hay linea no hace nada
 	while(getline(is, Read)){
 		BigQuery = false;
@@ -46,8 +45,7 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		// Se pasa el string a un streamstring para utilizar el operador >> para recibir los strings de caracter a caracter
 		stringstream StringRead(Read);
 
-		if(!(StringRead >> ch))
-			continue;
+		StringRead >> ch;
 
 		// Se verifica si el primer caracter es un divisor de linea, si lo es se debe hacer un big query, si no se lo agrega al stribg auxiliar
 		if(ch == LINE_DIVIDER){
@@ -78,6 +76,7 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 			// Se llama a una funcion que te separa los Ids en diferentes strings
 			status = DivideString(aux, Sensor, SENSOR_DIVIDER);
 			if (status != ST_OK){
+				delete [] Sensor;
 				return status;
 			}
 		}else if(BigQuery == false){
@@ -86,30 +85,50 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 		}
 
 		// Se procesa las comas y los numero enteros
-		ch = is.peek();
+		ch = StringRead.peek();
 		if(ch != LINE_DIVIDER){
 			Object.GetPackage()->SetQueryStatus(true);
 			Object.PrintPackage(os);
+			if(ComplexQuery){
+				delete[] Sensor;
+			}else if(!BigQuery){
+				delete Sensor;
+			}
 			continue;
 		}else{
-			is.ignore();
+			StringRead.ignore();
 		}
-		if(!(is >> Start)){
+		if(!(StringRead >> Start)){
 			Object.GetPackage()->SetQueryStatus(true);
 			Object.PrintPackage(os);
+			if(ComplexQuery){
+				delete[] Sensor;
+			}else if(!BigQuery){
+				delete Sensor;
+			}
 			continue;
 		}
-		ch = is.peek();
+		ch = StringRead.peek();
 		if(ch != LINE_DIVIDER){
 			Object.GetPackage()->SetQueryStatus(true);
 			Object.PrintPackage(os);
+			if(ComplexQuery){
+				delete[] Sensor;
+			}else if(!BigQuery){
+				delete Sensor;
+			}
 			continue;
 		}else{
-			is.ignore();
+			StringRead.ignore();
 		}
-		if(!(is >> End)){
+		if(!(StringRead >> End)){
 			Object.GetPackage()->SetQueryStatus(true);
 			Object.PrintPackage(os);
+			if(ComplexQuery){
+				delete[] Sensor;
+			}else if(!BigQuery){
+				delete Sensor;
+			}
 			continue;
 		}
 
@@ -124,6 +143,11 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 
 		// Se impreime en el archivo el resultado
 		Object.PrintPackage(os);
+		if(ComplexQuery){
+			delete[] Sensor;
+		}else if(!BigQuery){
+			delete Sensor;
+		}
 	}
 	return ST_OK;
 }
@@ -155,6 +179,7 @@ status_t ParseFirstLine(istream & is, Red & Object){
 	// Llama a una funcion que separa a los varios substrings en funcion del divisor que se utiliza
 	status = DivideString(Read, Parsed, LINE_DIVIDER);
 	if(status != ST_OK){
+		delete [] Parsed;
 		return status;
 	}
 
@@ -183,6 +208,7 @@ status_t ParsedData(istream & is, Red & Object){
 		while((StringRead >> Number)){
 			Data[i] = Number;
 			if((StringRead >> ch) && (ch != LINE_DIVIDER)){
+				delete[] Data;
 				return ST_ERROR_FILE_CORRUPTED;
 			}
 			i++;
@@ -222,12 +248,6 @@ status_t DivideString(string & Read, string * & Parsed, char Divider){
 
 	return ST_OK;
 }
-
-
-
-
-
-
 
 
 
