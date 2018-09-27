@@ -274,21 +274,5 @@ Red::~Red(){
 		delete[] _Sensors[i];
 	}
 	delete[] _Sensors;
-	delete _Pack;
+	delete[] _Pack;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

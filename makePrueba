@@ -5,11 +5,11 @@ FLAGS = -W -Wall -g -pedantic
 
 all: ejecprueba clear
 
-ejecprueba: Pruebas.o Cmdline.o ArrayDouble.o Error.o Package.o Red.o Utils.o
-	$(CC) $(FLAGS) -o ejec Pruebas.o Cmdline.o ArrayDouble.o Error.o Package.o Red.o Utils.o
+ejecprueba: Prueba.o Cmdline.o ArrayDouble.o Error.o Package.o Red.o Utils.o
+	$(CC) $(FLAGS) -o ejec Prueba.o Cmdline.o ArrayDouble.o Error.o Package.o Red.o Utils.o
 
-Pruebas.o: Pruebas.cpp Cmdline.hpp Utils.hpp Error.hpp Red.hpp ArrayDouble.hpp
-	$(CC) $(FLAGS) -o Pruebas.o -c Pruebas.cpp
+Prueba.o: Prueba.cpp Cmdline.hpp Utils.hpp Error.hpp Red.hpp ArrayDouble.hpp
+	$(CC) $(FLAGS) -o Prueba.o -c Prueba.cpp
 
 Cmdline.o: Cmdline.cpp Cmdline.hpp
 	$(CC) $(FLAGS) -o Cmdline.o -c Cmdline.cpp

@@ -70,8 +70,8 @@ int main(int argc, char * const argv[]){
 	}
 	int amount = SensorNet.GetAmount();
 
-	for (int i = 1; i < amount; i++) {
-		cout << "Id:" << i+1 << std::endl;
+	for (int i = 0; i < amount; i++) {
+		cout << "Id:" << i << std::endl;
 		cout << SensorNet.GetId(i) << std::endl;
 		cout << "Data:" << std::endl;
 		SensorNet.PrintSensorData(i);
