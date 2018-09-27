@@ -141,6 +141,8 @@ status_t ManageQuerys(istream & is, ostream & os, Red & Object){
 			Object.MakeSmallQuery(*Sensor, Start, End);
 		}
 
+
+
 		// Se impreime en el archivo el resultado
 		Object.PrintPackage(os);
 		if(ComplexQuery){

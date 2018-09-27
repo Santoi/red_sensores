@@ -90,6 +90,7 @@ void Package::Clear(void){
 	_Quantity = 0;
 	_BadRange = false;
 	_BadQuery = false;
+	_BadId = false;
 }
 
 Package & Package::operator=(const Package & p){
@@ -100,6 +101,7 @@ Package & Package::operator=(const Package & p){
 	_Quantity = p._Quantity;
 	_BadRange = p._BadRange;
 	_BadQuery = p._BadQuery;
+	_BadId = p._BadId;
 
 	return *this;
 }
