@@ -21,6 +21,7 @@ private:
 public:
 	Package();
 	Package(const Package &);
+	// Se definen los Geters de la clase
 	double GetAverage(void);
 	double GetMin(void);
 	double GetMax(void);
@@ -28,6 +29,7 @@ public:
 	bool GetRangeStatus(void);
 	bool GetQueryStatus(void);
 	bool GetIdStatus(void);
+	// Se definen los Seters de la clase
 	void SetAverage(const double);
 	void SetMin(double);
 	void SetMax(double);
@@ -35,7 +37,7 @@ public:
 	void SetRangeStatus(bool);
 	void SetQueryStatus(bool);
 	void SetIdStatus(bool);
-	void Clear();
+	void Clear();	// Esta funcion setea todos los numeros en cero y los bools en false
 	Package& operator=(const Package &);
 	~Package();
 };

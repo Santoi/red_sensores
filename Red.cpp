@@ -85,8 +85,7 @@ void Red::SetSensors(string * &Names, size_t Number){
 }
 
 void Red::PrintPackage(std::ostream & os){
-	bool aux;
-	if((aux =_Pack->GetQueryStatus()) && (aux == true)){
+	if(_Pack->GetQueryStatus()){
 		os << MSG_BAD_QUERY << std::endl;
 	}else if(_Pack->GetRangeStatus()){
 		os << MSG_BAD_RANGE << std::endl;

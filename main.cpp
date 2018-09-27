@@ -47,11 +47,13 @@ int main(int argc, char * const argv[]){
 	cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente.
 	cmdl.parse(argc, argv);	// Metodo de parseo de la clase cmdline. Settea las variables globales
 
+	// Se llama a una funcion que parsea todo el archivo de los datos
 	if ((st = ParseAll(*dss, SensorNet)) != ST_OK){
 		PrintError(st);
 		return EXIT_FAILURE;
 	}
 
+	// Se llama a una funcion que procesa todas las querys del archivo de entrada y escribe el archivo de salida
 	if ((st = ManageQuerys(*iss, *oss, SensorNet)) != ST_OK){
 		PrintError(st);
 		return EXIT_FAILURE;
