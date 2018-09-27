@@ -14,6 +14,7 @@ Package::Package(){
 	_Quantity = 0;
 	_BadRange = false;
 	_BadQuery = false;
+	_BadId = false;
 }
 
 Package::Package(const Package & p){
@@ -23,6 +24,7 @@ Package::Package(const Package & p){
 	_Quantity = p._Quantity;
 	_BadRange = p._BadRange;
 	_BadQuery = p._BadQuery;
+	_BadId = p._BadId;
 }
 
 double Package::GetAverage(void){

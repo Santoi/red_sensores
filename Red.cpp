@@ -85,7 +85,8 @@ void Red::SetSensors(string * &Names, size_t Number){
 }
 
 void Red::PrintPackage(std::ostream & os){
-	if(_Pack->GetQueryStatus()){
+	bool aux;
+	if((aux =_Pack->GetQueryStatus()) && (aux == true)){
 		os << MSG_BAD_QUERY << std::endl;
 	}else if(_Pack->GetRangeStatus()){
 		os << MSG_BAD_RANGE << std::endl;
@@ -105,7 +106,7 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 
 	aux = new Package;
 
-//	//aux->Clear();
+	//	//aux->Clear();
 
 	aux->SetIdStatus(true);
 	for(i = 0; i < _Amount; i++){
@@ -115,7 +116,7 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 		}
 	}
 	if(aux->GetIdStatus()){
-		_Pack = aux;
+		*_Pack = *aux;
 		delete aux;
 		return;
 	}
@@ -150,7 +151,7 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 		}
 	}
 
-	_Pack = aux;
+	*_Pack = *aux;
 	delete aux;
 }
 
@@ -194,7 +195,7 @@ void Red::MakeBigQuery(int Start, int End){
 		}
 	}
 
-	_Pack = aux;
+	*_Pack = *aux;
 	delete aux;
 }
 
@@ -233,7 +234,7 @@ void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End
 		}
 	}
 	if(aux->GetIdStatus()){
-		_Pack = aux;
+		*_Pack = *aux;
 		delete aux;
 		return;
 	}
@@ -253,7 +254,7 @@ void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End
 			}
 		}
 		if(aux->GetIdStatus()){
-			_Pack = aux;
+			*_Pack = *aux;
 			delete aux;
 			return;
 		}
@@ -270,7 +271,7 @@ void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End
 		}
 	}
 
-	_Pack = aux;
+	*_Pack = *aux;
 	delete aux;
 }
 
