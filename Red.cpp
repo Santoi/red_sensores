@@ -101,9 +101,11 @@ void Red::PrintPackage(std::ostream & os){
 void Red::MakeSmallQuery(string ID, int Start, int End){
 	int i,j;
 	int FinalMark;
-	Package * aux = NULL;
+	Package * aux;
 
-	aux->Clear();
+	aux = new Package;
+
+//	//aux->Clear();
 
 	aux->SetIdStatus(true);
 	for(i = 0; i < _Amount; i++){
@@ -114,6 +116,7 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 	}
 	if(aux->GetIdStatus()){
 		_Pack = aux;
+		delete aux;
 		return;
 	}
 
@@ -134,27 +137,30 @@ void Red::MakeSmallQuery(string ID, int Start, int End){
 	aux->SetQuantity(FinalMark - Start);
 
 	// Hay que setearlos de esta manera ya que en el vector puede ser que el minimo sea mayor que 0 o el maximo menor que 0
-	aux->SetMin((*_Sensors)[i][Start]);
-	aux->SetMax((*_Sensors)[i][Start]);
+	aux->SetMin((*_Sensors[i])[Start]);
+	aux->SetMax((*_Sensors[i])[Start]);
 
 	for (j = Start; j < FinalMark; j++){
-		aux->SetAverage(aux->GetAverage() + (*_Sensors)[i][j] / aux->GetQuantity());
-		if((*_Sensors)[i][j] < aux->GetMin()){
-			aux->SetMin((*_Sensors)[i][j]);
+		aux->SetAverage(aux->GetAverage() + (*_Sensors[i])[j] / aux->GetQuantity());
+		if((*_Sensors[i])[j] < aux->GetMin()){
+			aux->SetMin((*_Sensors[i])[j]);
 		}
-		if((*_Sensors)[i][j] > aux->GetMax()){
-			aux->SetMax((*_Sensors)[i][j]);
+		if((*_Sensors[i])[j] > aux->GetMax()){
+			aux->SetMax((*_Sensors[i])[j]);
 		}
 	}
 
 	_Pack = aux;
+	delete aux;
 }
 
 void Red::MakeBigQuery(int Start, int End){
 	int FinalMark;		// Indica donde termina la iteracion
-	Package * aux = NULL;
+	Package * aux;
 
-	aux->Clear();
+	aux = new Package;
+
+	////aux->Clear();
 
 	// Verifio si el intervalo esta en los Arreglos
 	if(Start > _Sensors[0]->UsedSize()){
@@ -173,30 +179,33 @@ void Red::MakeBigQuery(int Start, int End){
 	aux->SetQuantity(_Amount * (FinalMark - Start));
 
 	// Hay que setearlos de esta manera ya que en el vector puede ser que el minimo sea mayor que 0 o el maximo menor que 0
-	aux->SetMin((*_Sensors)[0][Start]);
-	aux->SetMax((*_Sensors)[0][Start]);
+	aux->SetMin((*_Sensors[0])[Start]);
+	aux->SetMax((*_Sensors[0])[Start]);
 
 	for (int i = 0; i < _Amount; ++i){
 		for (int j = Start; j < FinalMark; ++j){
-			aux->SetAverage(aux->GetAverage() + (*_Sensors)[i][j] / aux->GetQuantity());
-			if((*_Sensors)[i][j] < aux->GetMin()){
-				aux->SetMin((*_Sensors)[i][j]);
+			aux->SetAverage(aux->GetAverage() + (*_Sensors[i])[j] / aux->GetQuantity());
+			if((*_Sensors[i])[j] < aux->GetMin()){
+				aux->SetMin((*_Sensors[i])[j]);
 			}
-			if((*_Sensors)[i][j] > aux->GetMax()){
-				aux->SetMax((*_Sensors)[i][j]);
+			if((*_Sensors[i])[j] > aux->GetMax()){
+				aux->SetMax((*_Sensors[i])[j]);
 			}
 		}
 	}
 
 	_Pack = aux;
+	delete aux;
 }
 
 void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End){
 	int FinalMark;						// Indica donde termina la iteracion
-	Package * aux = NULL;
+	Package * aux;
  	int i, j, k;
 
-	aux->Clear();
+	aux = new Package;
+
+	//aux->Clear();
 
 	// Verifio si el intervalo esta en los Arreglos
 	if(Start > _Sensors[0]->UsedSize()){
@@ -225,12 +234,13 @@ void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End
 	}
 	if(aux->GetIdStatus()){
 		_Pack = aux;
+		delete aux;
 		return;
 	}
 
 	// Hay que setearlos de esta manera ya que en el vector puede ser que el minimo sea mayor que 0 o el maximo menor que 0
-	aux->SetMin((*_Sensors)[i][Start]);
-	aux->SetMax((*_Sensors)[i][Start]);
+	aux->SetMin((*_Sensors[i])[Start]);
+	aux->SetMax((*_Sensors[i])[Start]);
 
 	//	Finalmente hago el analisis de los datos
 	for(i = 0; i < SensorQuantity; ++i){
@@ -244,22 +254,24 @@ void Red::MakeComplexQuery(string * & ID, int SensorQuantity, int Start, int End
 		}
 		if(aux->GetIdStatus()){
 			_Pack = aux;
+			delete aux;
 			return;
 		}
 
 		// Una vez identificado el sensor al que se pide, se analiza la informacion
 		for(k = Start; k < FinalMark; k++){
-			aux->SetAverage(aux->GetAverage() + (*_Sensors)[j][k] / aux->GetQuantity());
-			if((*_Sensors)[j][k] < aux->GetMin()){
-				aux->SetMin((*_Sensors)[j][k]);
+			aux->SetAverage(aux->GetAverage() + (*_Sensors[j])[k] / aux->GetQuantity());
+			if((*_Sensors[j])[k] < aux->GetMin()){
+				aux->SetMin((*_Sensors[j])[k]);
 			}
-			if((*_Sensors)[j][k] > aux->GetMax()){
-				aux->SetMax((*_Sensors)[j][k]);
+			if((*_Sensors[j])[k] > aux->GetMax()){
+				aux->SetMax((*_Sensors[j])[k]);
 			}
 		}
 	}
 
 	_Pack = aux;
+	delete aux;
 }
 
 void Red::AppendRow(double * & Data){
@@ -271,8 +283,8 @@ void Red::AppendRow(double * & Data){
 Red::~Red(){
 	delete[] _Ids;
 	for (int i = 0; i < _Amount; ++i){
-		delete[] _Sensors[i];
+		delete _Sensors[i];
 	}
 	delete[] _Sensors;
-	delete[] _Pack;
+	delete _Pack;
 }
